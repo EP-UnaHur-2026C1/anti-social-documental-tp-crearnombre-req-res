@@ -16,3 +16,7 @@ services:
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://admin:admin1234@mongodb:27017/
       ME_CONFIG_BASICAUTH: "false"
+    depends_on:
+      - mongodb
+
+      

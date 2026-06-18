@@ -4,6 +4,7 @@
   "description": "UnaHur anti-social net - Trabajo Práctico",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,6 +27,6 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "joi": "^18.2.1",
-    "mongoose": "^9.7.0"
+    "mongoose": "^9.7.1"
   }
 }
