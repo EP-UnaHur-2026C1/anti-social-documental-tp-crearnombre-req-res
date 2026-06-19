@@ -10,6 +10,11 @@ const validarImage = (req, res, next) => {
  next();
 };
 
-
+const validarImagenId = (req, res, next) => {
+ if (!mongoose.Types.ObjectId.isValid(req.params.imageId)) {
+  return res.status(400).json({ error: 'ID de imagen no válido' });
+ }
+ next();
+}
 
 module.exports = { validarImage };

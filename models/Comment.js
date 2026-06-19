@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
+ userNickname: {
+  type: mongoose.Schema.Types.String,
+  ref: 'User'
+ },
+ postId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Post'
+ },
  descripcion: {
   type: String,
   required: [true, 'Description is required'],

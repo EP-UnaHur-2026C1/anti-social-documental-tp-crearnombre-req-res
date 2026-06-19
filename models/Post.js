@@ -10,6 +10,10 @@ const imageSchema = new mongoose.Schema({
 });
 
 const postSchema = new mongoose.Schema({
+  userNickname: {
+    type: mongoose.Schema.Types.String,
+    ref: 'User'
+  },
  description: {
   type: String,
   required: [true, 'Description is required'],

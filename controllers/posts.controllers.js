@@ -4,7 +4,7 @@ const agregarImagen = async (req, res) => {
  try {
   const { id } = req.params;
   const post = await Post.findById(id);
-  if (!post) { // despues lo paso a un middleware
+  if (!post) { 
    return res.status(404).json({ error: 'Post no encontrado' });
   }
   post.imagenes.push(req.body);
@@ -19,7 +19,7 @@ const eliminarImagen = async (req, res) => {
  try {
   const { id, imageId } = req.params;
   const post = await Post.findById(id);
-  if (!post) { // despues lo paso a un middleware
+  if (!post) { 
    return res.status(404).json({ error: 'Post no encontrado' });
   }
   post.imagenes = post.imagenes.filter(img => img._id.toString() !== imageId);
