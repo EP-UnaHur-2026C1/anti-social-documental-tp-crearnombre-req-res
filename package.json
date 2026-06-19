@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/EP-UnaHur-2026C1/anti-social-documental-tp-crearnombre-req-res#readme",
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "joi": "^18.2.1",

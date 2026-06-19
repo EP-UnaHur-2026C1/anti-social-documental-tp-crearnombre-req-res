@@ -30,6 +30,18 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model('Post', postSchema);
 
-module.exports = { Post };
+imageSchema.validate = function(body) {
 
+  if (!body || !body.url || body.url.trim() === '') {
+    return {
+      error: {
+        details: [{ message: '"url" is required' }]
+      }
+    };
+  }
+  
+  return { error: null };
+};
 
+module.exports = Post;
+module.exports.imageSchema = imageSchema;

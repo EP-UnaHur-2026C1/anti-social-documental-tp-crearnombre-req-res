@@ -1,14 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { validarImagen } = require('../middlewares/validarImages.middlewares');
+const { validarImage } = require('../middlewares/validarImages.middlewares');
 
 const {
- agregarImagen,
- eliminarImagen
+  createPost,
+  getPosts,
+  deletePost,
+  agregarImagen,
+  eliminarImagen
 } = require('../controllers/posts.controllers');
 
+router.post('/', createPost);
+router.get('/', getPosts);
+router.delete('/:id', deletePost);
 
-router.post('/:id/imagenes', validarImagen, agregarImagen);
+
+router.post('/:id/imagenes', validarImage, agregarImagen);
 router.delete('/:id/imagenes/:imageId', eliminarImagen);
 
 module.exports = router;
