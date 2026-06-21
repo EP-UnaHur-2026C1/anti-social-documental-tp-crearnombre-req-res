@@ -19,4 +19,10 @@ services:
     depends_on:
       - mongodb
 
-      
+  redis:
+    image: redis:8-alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning

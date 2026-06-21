@@ -1,48 +1,52 @@
-const Post = require('../models/Post');
+const Post = require("../models/Post");
+const Tag = require("../models/Tag");
+const { redisClient } = require("../config/redis");
 
 const agregarImagen = async (req, res) => {
- try {
-  const { id } = req.params;
-  const post = await Post.findById(id);
-  if (!post) { 
-   return res.status(404).json({ error: 'Post no encontrado' });
+  try {
+    const { id } = req.params;
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ error: "Post no encontrado" });
+    }
+    post.imagenes.push(req.body);
+    await post.save();
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: "Error al agregar la imagen" });
   }
-  post.imagenes.push(req.body);
-  await post.save();
-  res.status(200).json(post);
- } catch (error) {
-  res.status(500).json({ error: 'Error al agregar la imagen' });
- }
 };
 
 const eliminarImagen = async (req, res) => {
- try {
-  const { id, imageId } = req.params;
-  const post = await Post.findById(id);
-  if (!post) { 
-   return res.status(404).json({ error: 'Post no encontrado' });
+  try {
+    const { id, imageId } = req.params;
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ error: "Post no encontrado" });
+    }
+    post.imagenes = post.imagenes.filter(
+      (img) => img._id.toString() !== imageId,
+    );
+    await post.save();
+    res.status(200).json({
+      message: "Imagen eliminada con éxito",
+      post: post,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar la imagen" });
   }
-  post.imagenes = post.imagenes.filter(img => img._id.toString() !== imageId);
-  await post.save();
-  res.status(200).json({
-  message: "Imagen eliminada con éxito",
-  post: post
-  });
- } catch (error) {
-  res.status(500).json({ error: 'Error al eliminar la imagen' });
- }
 };
 
 // CREAR UN POST
 const createPost = async (req, res) => {
   try {
     const { description, userNickname, imagenes, tags } = req.body;
-    
+
     const newPost = await Post.create({
       description,
       userNickname,
       imagenes: imagenes || [],
-      tags: tags || []
+      tags: tags || [],
     });
 
     res.status(201).json(newPost);
@@ -51,19 +55,21 @@ const createPost = async (req, res) => {
   }
 };
 
-//OBTENER TODOS LOS POSTS 
+//OBTENER TODOS LOS POSTS
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate('tags');
-    
+    const posts = await Post.find().populate("tags");
+
     const limiteMeses = parseInt(process.env.COMENTARIOS_LIMIT_MESES) || 6;
     const fechaLimite = new Date();
     fechaLimite.setMonth(fechaLimite.getMonth() - limiteMeses);
 
-    const postsFiltrados = posts.map(post => {
+    const postsFiltrados = posts.map((post) => {
       const postObj = post.toObject();
       if (postObj.comments) {
-        postObj.comments = postObj.comments.filter(comment => new Date(comment.fecha) >= fechaLimite);
+        postObj.comments = postObj.comments.filter(
+          (comment) => new Date(comment.fecha) >= fechaLimite,
+        );
       }
       return postObj;
     });
@@ -74,17 +80,58 @@ const getPosts = async (req, res) => {
   }
 };
 
+//OBTENER POST POR ID
+const obtenerPostPorId = async (req, res) => {
+  try {
+    const post = req.post;
+    const cacheKey = `post:${post._id}`;
+
+    const postObj = post.toObject();
+
+    const limiteMeses = parseInt(process.env.COMENTARIOS_LIMIT_MESES) || 6;
+    const fechaLimite = new Date();
+    fechaLimite.setMonth(fechaLimite.getMonth() - limiteMeses);
+
+    if (postObj.comments) {
+      postObj.comments = postObj.comments.filter(
+        (comment) => new Date(comment.fecha) >= fechaLimite,
+      );
+    }
+
+    await redisClient.set(cacheKey, JSON.stringify(postObj), { EX: 500 });
+    console.log("Post obtenido de MongoDB");
+    res.status(200).json(postObj);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const actualizarPost = async (req, res) => {
+  try {
+    const postAnt = req.post;
+    const cacheKey = `post:${postAnt._id}`;
+    const post = await Post.findByIdAndUpdate(postAnt._id, req.body, {
+      new: true,
+    });
+    await redisClient.del(cacheKey);
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
 //ELIMINAR POST POR ID
 const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
+    const cacheKey = `post:${id}`;
     const deletedPost = await Post.findByIdAndDelete(id);
-    
+
     if (!deletedPost) {
-      return res.status(404).json({ message: 'Post no encontrado' });
+      return res.status(404).json({ message: "Post no encontrado" });
     }
-    
-    res.json({ message: 'Post eliminado correctamente' });
+    await redisClient.del(cacheKey);
+    res.json({ message: "Post eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -95,5 +142,7 @@ module.exports = {
   getPosts,
   deletePost,
   agregarImagen,
-  eliminarImagen
+  eliminarImagen,
+  obtenerPostPorId,
+  actualizarPost,
 };

@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const conectarDB = require("./config/db");
 const usersRouter = require("./routes/users.routes");
 const postsRouter = require("./routes/posts.routes");
+const { conectarRedis } = require("./config/redis");
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const app = express();
 app.use(express.json());
 
 conectarDB();
+conectarRedis();
 
 app.get("/", (req, res) => {
   res.send("API red social funcionando");
