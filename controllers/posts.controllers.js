@@ -7,9 +7,6 @@ const agregarImagen = async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Post.findById(id);
-    if (!post) {
-      return res.status(404).json({ error: "Post no encontrado" });
-    }
     const filename = await descargarImagen(req.body.url);
     post.imagenes.push({ url: `/images/${filename}` });
     await post.save();
@@ -23,9 +20,6 @@ const eliminarImagen = async (req, res) => {
   try {
     const { id, imageId } = req.params;
     const post = await Post.findById(id);
-    if (!post) {
-      return res.status(404).json({ error: "Post no encontrado" });
-    }
     post.imagenes = post.imagenes.filter(
       (img) => img._id.toString() !== imageId,
     );

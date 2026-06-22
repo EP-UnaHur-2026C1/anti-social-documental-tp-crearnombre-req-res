@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
-const { imageSchema } = require('../models/Post');
-
 
 const validarImage = (req, res, next) => {
- const { error } = imageSchema.validate(req.body);
- if (error) {
-  return res.status(400).json({ error: error.details[0].message });
+ if (!req.body.url || typeof req.body.url !== 'string') {
+  return res.status(400).json({ error: "Imagen no válida" });
  }
  next();
 };
+
 
 const validarImageId = (req, res, next) => {
  if (!mongoose.Types.ObjectId.isValid(req.params.imageId)) {
