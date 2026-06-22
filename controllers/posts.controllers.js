@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const Tag = require("../models/Tag");
 const { redisClient } = require("../config/redis");
+const { descargarImagen } = require("../utils/imagen.utils");
 
 const agregarImagen = async (req, res) => {
   try {
@@ -9,11 +10,12 @@ const agregarImagen = async (req, res) => {
     if (!post) {
       return res.status(404).json({ error: "Post no encontrado" });
     }
-    post.imagenes.push(req.body);
+    const filename = await descargarImagen(req.body.url);
+    post.imagenes.push({ url: `/images/${filename}` });
     await post.save();
     res.status(200).json(post);
   } catch (error) {
-    res.status(500).json({ error: "Error al agregar la imagen" });
+    res.status(500).json({ error: error.message || "Error al agregar la imagen" });
   }
 };
 

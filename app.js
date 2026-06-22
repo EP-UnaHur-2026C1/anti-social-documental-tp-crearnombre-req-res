@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const dotenv = require("dotenv");
 const conectarDB = require("./config/db");
 const usersRouter = require("./routes/users.routes");
@@ -10,6 +11,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 conectarDB();
 conectarRedis();
