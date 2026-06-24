@@ -24,7 +24,7 @@ const actualizarComentario = async (req, res) => {
         const { descripcion } = req.body;
         const comentarioActualizado = await Comment.actualizarComentario({
             descripcion,
-            fecha = Date.now()
+            fecha: Date.now()
         })
 
         if (!comentarioActualizado) {
@@ -36,6 +36,21 @@ const actualizarComentario = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
+
+const eliminarComentario = async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const comentarioEliminado = await Comment.eliminarComentario(commentId);
+
+        if (!comentarioEliminado) {
+            return res.status(404).json({ error: 'Comentario no encontrado' });
+        }
+
+        res.json(comentarioEliminado);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 
 const obtenerComentariosPorPost = async (req, res) => {
@@ -67,5 +82,3 @@ const obtenerComentarioPorId = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
-const 
