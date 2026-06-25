@@ -20,12 +20,15 @@ const crearComentario = async (req, res) => {
 
 const actualizarComentario = async (req, res) => {
     try {
-        const { comentarioId } = req.params;
+        const { commentId } = req.params;
         const { descripcion } = req.body;
-        const comentarioActualizado = await Comment.actualizarComentario({
-            descripcion,
-            fecha = Date.now()
-        })
+        const comentarioActualizado = await Comment.findByIdAndUpdate(
+            commentId,
+            {
+                descripcion,
+                fecha: Date.now()
+            }, { new: true }
+        )
 
         if (!comentarioActualizado) {
             return res.status(404).json({ error: 'Comentario no encontrado' })
@@ -37,6 +40,21 @@ const actualizarComentario = async (req, res) => {
     }
 }
 
+const eliminarComentario = async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const comentarioEliminado = await Comment.findByIdAndDelete(commentId);
+
+        if (!comentarioEliminado) {
+            return res.status(404).json({ error: 'Comentario no encontrado' });
+        }
+
+        res.json(comentarioEliminado);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 const obtenerComentariosPorPost = async (req, res) => {
     try {
@@ -45,7 +63,7 @@ const obtenerComentariosPorPost = async (req, res) => {
         const fechaLimite = new Date();
         fechaLimite.setMonth(fechaLimite.getMonth() - limiteMeses);
 
-        const comentarios = await Comment.find({ postId, fecha: { $gte: fechaLimite } });
+        const comentarios = await Comment.find({ postId, fecha: { $gte: fechaLimite } })
 
         res.json(comentarios);
     } catch (error) {
@@ -67,5 +85,3 @@ const obtenerComentarioPorId = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
-const 
