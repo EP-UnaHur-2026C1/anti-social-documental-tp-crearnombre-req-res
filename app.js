@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const conectarDB = require("./config/db");
 const usersRouter = require("./routes/users.routes");
 const postsRouter = require("./routes/posts.routes");
+const tagsRouter = require("./routes/tags.routes");
 const { conectarRedis } = require("./config/redis");
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
+app.use("/tags", tagsRouter);
 
 const PORT = process.env.PORT || 3000;
 
