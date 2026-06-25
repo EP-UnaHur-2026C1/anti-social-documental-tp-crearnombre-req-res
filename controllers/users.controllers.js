@@ -13,6 +13,9 @@ const obtenerUsuarios = async (req, res) => {
 const obtenerUsuarioPorId = async (req, res) => {
   try {
     const usuario = req.usuario;
+    const seguidoresCount = await Follower.countDocuments({
+      following: usuario._id,
+    });
 
     res.status(200).json({
       id: usuario._id,
@@ -20,6 +23,7 @@ const obtenerUsuarioPorId = async (req, res) => {
       nombre: usuario.nombre,
       apellido: usuario.apellido,
       fecha_nacimiento: usuario.fecha_nacimiento,
+      seguidoresCount,
     });
   } catch (error) {
     res.status(500).json({ error: "Error al obtener el usuario" });
@@ -49,8 +53,7 @@ const actualizarUsuario = async (req, res) => {
 
 const borrarUsuario = async (req, res) => {
   try {
-    const { id } = req.params;
-    await User.findByIdAndDelete(id);
+    await User.findByIdAndDelete(req.usuario._id);
     res.status(200).json({ message: "Usuario eliminado" });
   } catch (error) {
     res.status(500).json({ message: error });

@@ -39,7 +39,7 @@ const validarNickname = async (req, res, next) => {
     const existente = await User.findOne({ nickname });
     if (existente) {
       const paramId = req.params && req.params.id;
-      if (!paramId || String(existente.__id) !== String(paramId)) {
+      if (!paramId || String(existente._id) !== String(paramId)) {
         return res.status(409).json({ error: "El nickname ya está en uso" });
       }
     }
