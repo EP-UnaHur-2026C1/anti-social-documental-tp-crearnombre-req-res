@@ -190,7 +190,7 @@ const actualizarPost = async (req, res) => {
     await redisClient.del(cacheKey);
     res.status(200).json(post);
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ error: "Error al actualizar el post" });
   }
 };
 

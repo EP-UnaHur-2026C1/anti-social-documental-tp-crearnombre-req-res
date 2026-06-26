@@ -52,6 +52,10 @@ const eliminarComentario = async (req, res) => {
       return res.status(404).json({ error: "Comentario no encontrado" });
     }
 
+    await Post.findByIdAndUpdate(comentarioEliminado.postId, {
+      $pull: { comments: commentId },
+    });
+
     res.json(comentarioEliminado);
   } catch (error) {
     res.status(500).json({ error: error.message });
