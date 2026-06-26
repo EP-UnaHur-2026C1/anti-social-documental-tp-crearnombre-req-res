@@ -1,15 +1,19 @@
 const Post = require("../models/Post");
 const Tag = require("../models/Tag");
+const Comment = require("../models/Comment");
 const { redisClient } = require("../config/redis");
 const { descargarImagen } = require("../utils/imagen.utils");
 
 const agregarImagen = async (req, res) => {
   try {
-    const { id } = req.params;
-    const post = await Post.findById(id);
+    const post = req.post;
     const filename = await descargarImagen(req.body.url);
     post.imagenes.push({ url: `/images/${filename}` });
     await post.save();
+
+    // Invalidar caché
+    await redisClient.del(`post:${post._id}`);
+
     res.status(200).json(post);
   } catch (error) {
     res
@@ -20,18 +24,96 @@ const agregarImagen = async (req, res) => {
 
 const eliminarImagen = async (req, res) => {
   try {
-    const { id, imageId } = req.params;
-    const post = await Post.findById(id);
+    const post = req.post;
+    const { imageId } = req.params;
+
+    const imagenExiste = post.imagenes.some(
+      (img) => img._id.toString() === imageId,
+    );
+    if (!imagenExiste) {
+      return res.status(404).json({ error: "Imagen no encontrada en el post" });
+    }
+
     post.imagenes = post.imagenes.filter(
       (img) => img._id.toString() !== imageId,
     );
     await post.save();
+
+    // Invalidar caché
+    await redisClient.del(`post:${post._id}`);
+
     res.status(200).json({
       message: "Imagen eliminada con éxito",
       post: post,
     });
   } catch (error) {
     res.status(500).json({ error: "Error al eliminar la imagen" });
+  }
+};
+
+const agregarTag = async (req, res) => {
+  try {
+    const post = req.post;
+    const tag = req.tag;
+
+    const tagIdStr = tag._id.toString();
+    const tagExiste = post.tags.some((t) => {
+      const idStr = t._id ? t._id.toString() : t.toString();
+      return idStr === tagIdStr;
+    });
+
+    if (tagExiste) {
+      return res
+        .status(400)
+        .json({ error: "El tag ya está asociado a este post" });
+    }
+
+    post.tags.push(tag._id);
+    await post.save();
+
+    // Invalidar caché
+    await redisClient.del(`post:${post._id}`);
+
+    await post.populate("tags");
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: "Error al agregar el tag" });
+  }
+};
+
+const eliminarTag = async (req, res) => {
+  try {
+    const post = req.post;
+    const tag = req.tag;
+
+    const tagIdStr = tag._id.toString();
+    const tagExiste = post.tags.some((t) => {
+      const idStr = t._id ? t._id.toString() : t.toString();
+      return idStr === tagIdStr;
+    });
+
+    if (!tagExiste) {
+      return res
+        .status(404)
+        .json({ error: "El tag no está asociado a este post" });
+    }
+
+    post.tags = post.tags.filter((t) => {
+      const idStr = t._id ? t._id.toString() : t.toString();
+      return idStr !== tagIdStr;
+    });
+    await post.save();
+
+    // Invalidar caché
+    await redisClient.del(`post:${post._id}`);
+
+    res.status(200).json({
+      message: "Tag eliminado con éxito",
+      post: post,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el tag" });
   }
 };
 
@@ -56,23 +138,22 @@ const createPost = async (req, res) => {
 //OBTENER TODOS LOS POSTS
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate("tags").populate("comments");
+    const posts = await Post.find().populate("tags");
+    const todosLosComentarios = await Comment.find();
 
-    const limiteMeses = parseInt(process.env.COMENTARIOS_LIMITE_MESES) || 6;
-    const fechaLimite = new Date();
-    fechaLimite.setMonth(fechaLimite.getMonth() - limiteMeses);
+    const comentariosVisibles = todosLosComentarios.filter(
+      (comentario) => comentario.visibilidad,
+    );
 
-    const postsFiltrados = posts.map((post) => {
+    const postConComentarios = posts.map((post) => {
       const postObj = post.toObject();
-      if (postObj.comments) {
-        postObj.comments = postObj.comments.filter(
-          (comment) => new Date(comment.fecha) >= fechaLimite,
-        );
-      }
+      postObj.comments = comentariosVisibles.filter(
+        (comentario) => comentario.postId.toString() === postObj._id.toString(),
+      );
       return postObj;
     });
 
-    res.json(postsFiltrados);
+    res.json(postConComentarios);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -86,15 +167,10 @@ const obtenerPostPorId = async (req, res) => {
 
     const postObj = post.toObject();
 
-    const limiteMeses = parseInt(process.env.COMENTARIOS_LIMIT_MESES) || 6;
-    const fechaLimite = new Date();
-    fechaLimite.setMonth(fechaLimite.getMonth() - limiteMeses);
-
-    if (postObj.comments) {
-      postObj.comments = postObj.comments.filter(
-        (comment) => new Date(comment.fecha) >= fechaLimite,
-      );
-    }
+    const comentariosDelPost = await Comment.find({ postId: postObj._id });
+    postObj.comments = comentariosDelPost.filter(
+      (comentario) => comentario.visibilidad,
+    );
 
     await redisClient.set(cacheKey, JSON.stringify(postObj), { EX: 500 });
     console.log("Post obtenido de MongoDB");
@@ -143,4 +219,6 @@ module.exports = {
   eliminarImagen,
   obtenerPostPorId,
   actualizarPost,
+  agregarTag,
+  eliminarTag,
 };

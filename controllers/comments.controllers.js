@@ -61,16 +61,12 @@ const eliminarComentario = async (req, res) => {
 const obtenerComentariosPorPost = async (req, res) => {
   try {
     const { postId } = req.params;
-    const limiteMeses = parseInt(process.env.COMENTARIOS_LIMITE_MESES) || 6;
-    const fechaLimite = new Date();
-    fechaLimite.setMonth(fechaLimite.getMonth() - limiteMeses);
+    const comentarios = await Comment.find({ postId });
+    const comentariosVisibles = comentarios.filter(
+      (comentario) => comentario.visibilidad,
+    );
 
-    const comentarios = await Comment.find({
-      postId,
-      fecha: { $gte: fechaLimite },
-    });
-
-    res.json(comentarios);
+    res.json(comentariosVisibles);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
