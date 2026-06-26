@@ -10,10 +10,6 @@ const commentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
         required: [true, 'Post ID is required']
-    },
-    visibilidad: {
-        type: Boolean,
-        default: true
     }
     ,
     descripcion: {
@@ -27,7 +23,20 @@ const commentSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true,
+    toJSON: {
+        virtuals: true
+    }, toObject: {
+        virtuals: true
+    }
 });
+
+commentSchema.virtual('visibilidad').get(function () {
+    const limiteMeses = parseInt(process.env.COMENTARIOS_LIMITE_MESES) || 6;
+    const fechaLimite = new Date();
+    fechaLimite.setMonth(fechaLimite.getMonth() - limiteMeses);
+
+    return this.fecha >= fechaLimite;
+})
 
 const Comment = mongoose.model('Comment', commentSchema);
 

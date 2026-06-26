@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const Tag = require("../models/Tag");
+const Comment = require('../models/Comment');
 const { redisClient } = require("../config/redis");
 const { descargarImagen } = require("../utils/imagen.utils");
 
@@ -57,22 +58,17 @@ const createPost = async (req, res) => {
 const getPosts = async (req, res) => {
   try {
     const posts = await Post.find().populate("tags");
+    const todosLosComentarios = await Comment.find();
 
-    const limiteMeses = parseInt(process.env.COMENTARIOS_LIMITE_MESES) || 6;
-    const fechaLimite = new Date();
-    fechaLimite.setMonth(fechaLimite.getMonth() - limiteMeses);
+    const comentariosVisibles = todosLosComentarios.filter(comentario => comentario.visibilidad);
 
-    const postsFiltrados = posts.map((post) => {
+    const postConComentarios = posts.map((post) => {
       const postObj = post.toObject();
-      if (postObj.comments) {
-        postObj.comments = postObj.comments.filter(
-          (comment) => new Date(comment.fecha) >= fechaLimite,
-        );
-      }
+      postObj.comments = comentariosVisibles.filter(comentario => comentario.postId.toString() === postObj._id.toString());
       return postObj;
-    });
+    })
 
-    res.json(postsFiltrados);
+    res.json(postConComentarios);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -86,15 +82,8 @@ const obtenerPostPorId = async (req, res) => {
 
     const postObj = post.toObject();
 
-    const limiteMeses = parseInt(process.env.COMENTARIOS_LIMIT_MESES) || 6;
-    const fechaLimite = new Date();
-    fechaLimite.setMonth(fechaLimite.getMonth() - limiteMeses);
-
-    if (postObj.comments) {
-      postObj.comments = postObj.comments.filter(
-        (comment) => new Date(comment.fecha) >= fechaLimite,
-      );
-    }
+    const comentariosDelPost = await Comment.find({ postId: postObj._id });
+    postObj.comments = comentariosDelPost.filter(comentario => comentario.visibilidad);
 
     await redisClient.set(cacheKey, JSON.stringify(postObj), { EX: 500 });
     console.log("Post obtenido de MongoDB");
