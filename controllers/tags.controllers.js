@@ -14,6 +14,8 @@ const obtenerTags = async (req, res) => {
   }
 };
 
+
+
 const crearTag = async (req, res) => {
   try {
     await Tag.create(req.body);

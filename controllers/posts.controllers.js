@@ -6,11 +6,14 @@ const { descargarImagen } = require("../utils/imagen.utils");
 
 const agregarImagen = async (req, res) => {
   try {
-    const { id } = req.params;
-    const post = await Post.findById(id);
+    const post = req.post;
     const filename = await descargarImagen(req.body.url);
     post.imagenes.push({ url: `/images/${filename}` });
     await post.save();
+    
+    // Invalidar caché
+    await redisClient.del(`post:${post._id}`);
+    
     res.status(200).json(post);
   } catch (error) {
     res
@@ -21,12 +24,22 @@ const agregarImagen = async (req, res) => {
 
 const eliminarImagen = async (req, res) => {
   try {
-    const { id, imageId } = req.params;
-    const post = await Post.findById(id);
+    const post = req.post;
+    const { imageId } = req.params;
+    
+    const imagenExiste = post.imagenes.some((img) => img._id.toString() === imageId);
+    if (!imagenExiste) {
+      return res.status(404).json({ error: "Imagen no encontrada en el post" });
+    }
+
     post.imagenes = post.imagenes.filter(
       (img) => img._id.toString() !== imageId,
     );
     await post.save();
+    
+    // Invalidar caché
+    await redisClient.del(`post:${post._id}`);
+
     res.status(200).json({
       message: "Imagen eliminada con éxito",
       post: post,
@@ -35,6 +48,69 @@ const eliminarImagen = async (req, res) => {
     res.status(500).json({ error: "Error al eliminar la imagen" });
   }
 };
+
+const agregarTag = async (req, res) => {
+  try {
+    const post = req.post;
+    const tag = req.tag;
+
+    const tagIdStr = tag._id.toString();
+    const tagExiste = post.tags.some((t) => {
+      const idStr = t._id ? t._id.toString() : t.toString();
+      return idStr === tagIdStr;
+    });
+
+    if (tagExiste) {
+      return res.status(400).json({ error: "El tag ya está asociado a este post" });
+    }
+
+    post.tags.push(tag._id);
+    await post.save();
+
+    // Invalidar caché
+    await redisClient.del(`post:${post._id}`);
+
+    await post.populate("tags");
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: "Error al agregar el tag" });
+  }
+};
+
+const eliminarTag = async (req, res) => {
+  try {
+    const post = req.post;
+    const tag = req.tag;
+
+    const tagIdStr = tag._id.toString();
+    const tagExiste = post.tags.some((t) => {
+      const idStr = t._id ? t._id.toString() : t.toString();
+      return idStr === tagIdStr;
+    });
+
+    if (!tagExiste) {
+      return res.status(404).json({ error: "El tag no está asociado a este post" });
+    }
+
+    post.tags = post.tags.filter((t) => {
+      const idStr = t._id ? t._id.toString() : t.toString();
+      return idStr !== tagIdStr;
+    });
+    await post.save();
+
+    // Invalidar caché
+    await redisClient.del(`post:${post._id}`);
+
+    res.status(200).json({
+      message: "Tag eliminado con éxito",
+      post: post,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el tag" });
+  }
+};
+
 
 // CREAR UN POST
 const createPost = async (req, res) => {
@@ -132,4 +208,6 @@ module.exports = {
   eliminarImagen,
   obtenerPostPorId,
   actualizarPost,
+  agregarTag,
+  eliminarTag
 };

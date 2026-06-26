@@ -240,7 +240,7 @@ paths:
                     example: "/images/123456789.jpg"
         '404':
           description: Post o imagen no encontrados
-
+  
   /tags:
     get:
       summary: Obtiene todos los tags
@@ -322,6 +322,55 @@ paths:
           description: Tag eliminado exitosamente
         '404':
           description: Tag no encontrado
+
+    /posts/{id}/tags:
+      post:
+        summary: Agrega un tag a un post
+        tags: [Posts, Tags]
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - tagId
+                properties:
+                  tagId:
+                    type: string
+                    example: "60d5ecb8b392d7001f112234"
+        responses:
+          '200':
+            description: Tag agregado exitosamente
+          '404':
+            description: Post o tag no encontrados
+
+    /posts/{id}/tags/{tagId}:
+      delete:
+        summary: Elimina un tag de un post
+        tags: [Posts, Tags]
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: string
+          - in: path
+            name: tagId
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Tag eliminado exitosamente
+          '404':
+            description: Post o tag no encontrados
 
   /comments:
     post:

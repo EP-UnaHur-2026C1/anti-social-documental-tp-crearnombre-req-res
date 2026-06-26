@@ -11,6 +11,11 @@ const {
 } = require("../middlewares/validarPost.middlewares");
 
 const {
+  validarTagPorId,
+  validarTagIdEnBody
+} = require("../middlewares/validarTag.middlewares.js");
+
+const {
   createPost,
   getPosts,
   deletePost,
@@ -18,6 +23,8 @@ const {
   eliminarImagen,
   obtenerPostPorId,
   actualizarPost,
+  agregarTag,
+  eliminarTag
 } = require("../controllers/posts.controllers");
 
 router.post("/", createPost);
@@ -26,7 +33,11 @@ router.get("/:id", validarPostId, cachePostPorId, obtenerPostPorId);
 router.put("/:id", validarPostId, validarActualizarPost, actualizarPost);
 router.delete("/:id", validarPostId, deletePost);
 
-router.post("/:id/imagenes", validarImage, agregarImagen);
-router.delete("/:id/imagenes/:imageId", validarImageId, eliminarImagen);
+router.post("/:id/imagenes", validarPostId, validarImage, agregarImagen);
+router.delete("/:id/imagenes/:imageId", validarPostId, validarImageId, eliminarImagen);
+
+
+router.post("/:id/tags", validarPostId, validarTagIdEnBody, agregarTag);
+router.delete("/:id/tags/:tagId", validarPostId, validarTagPorId, eliminarTag);
 
 module.exports = router;

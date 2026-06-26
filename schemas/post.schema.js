@@ -23,4 +23,6 @@ const actualizarPostSchema = Joi.object({
   }),
 }).min(1);
 
-module.exports = { actualizarPostSchema };
+
+
+module.exports = { actualizarPostSchema, agregarTagSchema };
