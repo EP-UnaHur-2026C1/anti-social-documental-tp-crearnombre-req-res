@@ -1,8 +1,4 @@
 openapi: 3.0.0
-info:
-  title: UnaHur Anti-Social Net API
-  description: MVP de una red social donde los usuarios pueden realizar publicaciones y recibir comentarios.
-  version: 1.0.0
 
 servers:
   - url: http://localhost:3000
@@ -57,6 +53,54 @@ paths:
         '400':
           description: Error de validación
 
+  /users/{id}:
+    get:
+      summary: Obtiene un usuario por ID
+      tags: [Users]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+    put:
+      summary: Actualiza un usuario
+      tags: [Users]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario actualizado exitosamente
+        '404':
+          description: Usuario no encontrado
+    delete:
+      summary: Elimina un usuario
+      tags: [Users]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario eliminado exitosamente
+        '404':
+          description: Usuario no encontrado
+
   /posts:
     get:
       summary: Obtiene todos los posts (con sus tags y comentarios filtrados)
@@ -94,6 +138,268 @@ paths:
           description: Post creado exitosamente
         '400':
           description: Error al crear post
+
+  /posts/{id}:
+    get:
+      summary: Obtiene un post por ID
+      tags: [Posts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post no encontrado
+    put:
+      summary: Actualiza un post
+      tags: [Posts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post actualizado exitosamente
+        '404':
+          description: Post no encontrado
+    delete:
+      summary: Elimina un post
+      tags: [Posts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post eliminado exitosamente
+        '404':
+          description: Post no encontrado
+
+  /posts/{id}/imagenes:
+    get:
+      summary: Obtiene las imagenes de un post
+      tags: [Posts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Imagenes del post obtenidas exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '404':
+          description: Post no encontrado
+
+  /posts/{id}/imagenes/{imageId}:
+    get:
+      summary: Obtiene una imagen de un post
+      tags: [Posts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: imageId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Imagen del post obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: "60d5ecb8b392d7001f112234"
+                  url:
+                    type: string
+                    example: "/images/123456789.jpg"
+        '404':
+          description: Post o imagen no encontrados
+
+  /tags:
+    get:
+      summary: Obtiene todos los tags
+      tags: [Tags]
+      responses:
+        '200':
+          description: Lista de tags obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+    post:
+      summary: Crea un nuevo tag
+      tags: [Tags]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nombre
+              properties:
+                nombre:
+                  type: string
+                  example: "deportes"
+      responses:
+        '201':
+          description: Tag creado exitosamente
+        '400':
+          description: Error al crear tag
+
+  /tags/{id}:
+    get:
+      summary: Obtiene un tag por ID
+      tags: [Tags]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tag obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '404':
+          description: Tag no encontrado
+    put:
+      summary: Actualiza un tag
+      tags: [Tags]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tag actualizado exitosamente
+        '404':
+          description: Tag no encontrado
+    delete:
+      summary: Elimina un tag
+      tags: [Tags]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tag eliminado exitosamente
+        '404':
+          description: Tag no encontrado
+
+  /comments:
+    post:
+      summary: Crea un nuevo comentario
+      tags: [Comments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - postId
+                - userNickname
+                - descripcion
+              properties:
+                postId:
+                  type: string
+                  example: "60d5ecb8b392d7001f112234"
+                userNickname:
+                  type: string
+                  example: "pepito99"
+                descripcion:
+                  type: string
+                  example: "Este es un comentario"
+      responses:
+        '201':
+          description: Comentario creado exitosamente
+        '400':
+          description: Error al crear comentario
+
+  /comments/{id}:
+    get:
+      summary: Obtiene un comentario por ID
+      tags: [Comments]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comentario obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '404':
+          description: Comentario no encontrado
+    put:
+      summary: Actualiza un comentario
+      tags: [Comments]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comentario actualizado exitosamente
+        '404':
+          description: Comentario no encontrado
+    delete:
+      summary: Elimina un comentario
+      tags: [Comments]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comentario eliminado exitosamente
+        '404':
+          description: Comentario no encontrado
 
 components:
   schemas:
@@ -148,3 +454,32 @@ components:
         fecha:
           type: string
           format: date-time
+
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d5ecb8b392d7001f112234"
+        postId:
+          type: string
+          example: "60d5ecb8b392d7001f112235"
+        userNickname:
+          type: string
+          example: "pepito99"
+        descripcion:
+          type: string
+          example: "Este es un comentario"
+        fecha:
+          type: string
+          format: date-time
+
+    Tag:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d5ecb8b392d7001f112236"
+        nombre:
+          type: string
+          example: "deportes"

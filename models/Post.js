@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 
 const imageSchema = new mongoose.Schema({
- url: {
-  type: String,
-  required: [true, 'Image URL is required'],
-  trim: true,
- }
+  url: {
+    type: String,
+    required: [true, 'Image URL is required'],
+    trim: true,
+  }
 });
 
 const postSchema = new mongoose.Schema({
@@ -15,27 +15,31 @@ const postSchema = new mongoose.Schema({
     ref: 'User',
     required: [true, 'User nickname is required']
   },
- description: {
-  type: String,
-  required: [true, 'Description is required'],
-  trim: true,
- },
- fecha: {
-  type: Date,
-  default: Date.now,
- },
- tags: [{
-  type: mongoose.Schema.Types.ObjectId,
-  ref: 'Tag'
- }],
- imagenes: [imageSchema]
+  description: {
+    type: String,
+    required: [true, 'Description is required'],
+    trim: true,
+  },
+  fecha: {
+    type: Date,
+    default: Date.now,
+  },
+  tags: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tag'
+  }],
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment'
+  }],
+  imagenes: [imageSchema]
 }, {
- timestamps: true,
+  timestamps: true,
 });
 
 const Post = mongoose.model('Post', postSchema);
 
-imageSchema.validate = function(body) {
+imageSchema.validate = function (body) {
 
   if (!body || !body.url || body.url.trim() === '') {
     return {
@@ -44,7 +48,7 @@ imageSchema.validate = function(body) {
       }
     };
   }
-  
+
   return { error: null };
 };
 
