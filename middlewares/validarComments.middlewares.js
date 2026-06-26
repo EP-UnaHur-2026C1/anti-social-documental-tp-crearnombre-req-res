@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Comment = require('../models/Comment');
 const User = require('../models/User');
 const Post = require('../models/Post');
-const { commentSchema } = require('../schemas/comments.schema');
+
 
 
 const validarComentario = async (req, res, next) => {
@@ -83,22 +83,8 @@ const validarPostId = async (req, res, next) => {
     }
 }
 
-const validarEliminarComentario = async (req, res, next) => {
-    try {
-        const { commentId } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(commentId)) {
-            return res.status(400).json({ error: 'Comentario ID no válido' });
-        }
-        const comment = await Comment.findById(commentId);
-        if (!comment) {
-            return res.status(404).json({ error: 'Comentario no encontrado' });
-        }
-        next();
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-}
 
 
 
-module.exports = { validarComentario, validarComentarioId, validarActualizarComentario, validarPostId, validarEliminarComentario };
+
+module.exports = { validarComentario, validarComentarioId, validarActualizarComentario, validarPostId };

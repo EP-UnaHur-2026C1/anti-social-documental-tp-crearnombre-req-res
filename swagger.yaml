@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  title: UnaHur Anti-Social Net API
+  description: MVP de una red social donde los usuarios pueden realizar publicaciones y recibir comentarios.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor Local
+
+tags:
+  - name: Users
+    description: Gestión de usuarios
+  - name: Posts
+    description: Gestión de publicaciones
+  - name: Comments
+    description: Gestión de comentarios
+  - name: Tags
+    description: Gestión de etiquetas
+
+paths:
+  /users:
+    get:
+      summary: Obtiene todos los usuarios
+      tags: [Users]
+      responses:
+        '200':
+          description: Lista de usuarios obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Crea un nuevo usuario
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nickName
+                - email
+              properties:
+                nickName:
+                  type: string
+                  example: "pepito99"
+                email:
+                  type: string
+                  example: "pepito@mail.com"
+      responses:
+        '201':
+          description: Usuario creado exitosamente
+        '400':
+          description: Error de validación
+
+  /posts:
+    get:
+      summary: Obtiene todos los posts (con sus tags y comentarios filtrados)
+      tags: [Posts]
+      responses:
+        '200':
+          description: Lista de posteos obtenida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+    post:
+      summary: Crea un nuevo post
+      tags: [Posts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userNickname
+                - description
+              properties:
+                userNickname:
+                  type: string
+                  example: "pepito99"
+                description:
+                  type: string
+                  example: "Este es mi primer post en Anti-Social Net"
+      responses:
+        '201':
+          description: Post creado exitosamente
+        '400':
+          description: Error al crear post
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d5ecb8b392d7001f112233"
+        nickName:
+          type: string
+          example: "pepito99"
+        email:
+          type: string
+          example: "pepito@mail.com"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Post:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d5ecb8b392d7001f112234"
+        userNickname:
+          type: string
+          example: "pepito99"
+        description:
+          type: string
+          example: "Este es mi primer post en Anti-Social Net"
+        imagenes:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                example: "/images/123456789.jpg"
+        tags:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              nombre:
+                type: string
+        fecha:
+          type: string
+          format: date-time
