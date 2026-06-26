@@ -14,6 +14,7 @@ const agregarImagen = async (req, res) => {
     // Invalidar caché
     await redisClient.del(`post:${post._id}`);
 
+
     res.status(200).json(post);
   } catch (error) {
     res
@@ -138,7 +139,7 @@ const createPost = async (req, res) => {
 //OBTENER TODOS LOS POSTS
 const getPosts = async (req, res) => {
   try {
-    
+
     const posts = await Post.find().populate("tags");
     const todosLosComentarios = await Comment.find();
 
@@ -154,9 +155,9 @@ const getPosts = async (req, res) => {
       return postObj;
     });
 
-    await redisClient.set("posts", JSON.stringify(posts), { EX: 500 }); 
+    await redisClient.set("posts", JSON.stringify(posts), { EX: 500 });
     console.log("Posts obtenidos de MongoDB");
-    
+
     res.json(postConComentarios);
   } catch (error) {
     res.status(500).json({ error: error.message });

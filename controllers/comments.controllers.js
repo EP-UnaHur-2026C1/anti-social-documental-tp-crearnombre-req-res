@@ -1,6 +1,8 @@
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const User = require("../models/User");
+const { redisClient } = require("../config/redis");
+
 
 const crearComentario = async (req, res) => {
   try {
@@ -14,6 +16,9 @@ const crearComentario = async (req, res) => {
     await Post.findByIdAndUpdate(postId, {
       $push: { comments: newComment._id },
     });
+    await redisClient.del(`post:${postId}`);
+    await redisClient.del("posts");
+
     res.status(201).json(newComment);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -36,6 +41,8 @@ const actualizarComentario = async (req, res) => {
     if (!comentarioActualizado) {
       return res.status(404).json({ error: "Comentario no encontrado" });
     }
+    await redisClient.del(`post:${comentarioActualizado.postId}`);
+    await redisClient.del("posts");
 
     res.json(comentarioActualizado);
   } catch (error) {
@@ -55,6 +62,8 @@ const eliminarComentario = async (req, res) => {
     await Post.findByIdAndUpdate(comentarioEliminado.postId, {
       $pull: { comments: commentId },
     });
+    await redisClient.del(`post:${comentarioEliminado.postId}`);
+    await redisClient.del("posts");
 
     res.json(comentarioEliminado);
   } catch (error) {
