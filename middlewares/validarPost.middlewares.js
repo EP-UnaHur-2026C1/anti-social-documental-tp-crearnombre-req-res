@@ -30,8 +30,6 @@ const cachePostPorId = async (req, res, next) => {
   next();
 };
 
-
-
 const cachePost = async (req, res, next) => {
   const postsEnCache = await redisClient.get("posts");
   if (postsEnCache) {
@@ -40,7 +38,6 @@ const cachePost = async (req, res, next) => {
    }
   next();
 };
-
 
 
 
