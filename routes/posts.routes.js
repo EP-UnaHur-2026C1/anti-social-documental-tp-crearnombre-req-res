@@ -9,6 +9,7 @@ const {
   validarPostId,
   cachePostPorId,
   validarActualizarPost,
+  cachePost
 } = require("../middlewares/validarPost.middlewares");
 const {
   validarUsuarioNickname,
@@ -32,7 +33,7 @@ const {
 } = require("../controllers/posts.controllers");
 
 router.post("/", validarPost, validarUsuarioNickname, createPost);
-router.get("/", getPosts);
+router.get("/", cachePost, getPosts);
 router.get("/:id", validarPostId, cachePostPorId, obtenerPostPorId);
 router.put("/:id", validarPostId, validarActualizarPost, actualizarPost);
 router.delete("/:id", validarPostId, deletePost);

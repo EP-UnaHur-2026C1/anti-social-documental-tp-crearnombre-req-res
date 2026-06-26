@@ -30,6 +30,20 @@ const cachePostPorId = async (req, res, next) => {
   next();
 };
 
+
+
+const cachePost = async (req, res, next) => {
+  const postsEnCache = await redisClient.get("posts");
+  if (postsEnCache) {
+    console.log("Posts obtenidos de Redis");
+    return res.status(200).json(JSON.parse(postsEnCache));
+   }
+  next();
+};
+
+
+
+
 const validarActualizarPost = (req, res, next) => {
   const { error } = actualizarPostSchema.validate(req.body);
   if (error) {
@@ -43,4 +57,5 @@ module.exports = {
   validarPostId,
   cachePostPorId,
   validarActualizarPost,
+  cachePost
 };
