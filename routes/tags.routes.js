@@ -7,6 +7,7 @@ const {
 } = require("../middlewares/validarTag.middlewares");
 
 router.get("/", tagsController.obtenerTags);
+router.get("/:id", validarTagPorId, tagsController.obtenerTagId);
 router.post("/", validarTag, tagsController.crearTag);
 router.put("/:id", validarTagPorId, validarTag, tagsController.actualizarTag);
 router.delete("/:id", validarTagPorId, tagsController.eliminarTag);

@@ -2,9 +2,7 @@ const Tag = require("../models/Tag");
 
 const obtenerTags = async (req, res) => {
   try {
-    const tags = await Tag.find().select(
-      "-createdAt -updatedAt -__v"
-    );
+    const tags = await Tag.find().select("-createdAt -updatedAt -__v");
     res.status(200).json(tags);
   } catch (error) {
     res.status(500).json({
@@ -14,7 +12,17 @@ const obtenerTags = async (req, res) => {
   }
 };
 
-
+const obtenerTagId = async (req, res) => {
+  try {
+    const tag = req.tag;
+    res.status(200).json(tag);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener el Tags",
+      error: error.message,
+    });
+  }
+};
 
 const crearTag = async (req, res) => {
   try {
@@ -74,4 +82,5 @@ module.exports = {
   crearTag,
   actualizarTag,
   eliminarTag,
+  obtenerTagId,
 };
