@@ -47,4 +47,4 @@ const validarTagIdEnBody = async (req, res, next) => {
   }
 };
 
-module.exports = { validarTagPorId, validarTagIdEnBody };
+module.exports = { validarTag, validarTagPorId, validarTagIdEnBody };
