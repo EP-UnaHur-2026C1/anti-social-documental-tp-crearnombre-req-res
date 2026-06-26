@@ -1,4 +1,4 @@
-# Anti-Social Documental
+# Anti-Social UnaHur
 
 API de red social construida con Node.js, Express y MongoDB. Permite gestionar usuarios, publicaciones, comentarios, tags, imágenes y seguidores. Utiliza bases de datos documentales para el almacenamiento principal y Redis para la gestión de caché.
 
