@@ -1,10 +1,18 @@
 const Post = require("../models/Post");
 const { redisClient } = require("../config/redis");
-const { actualizarPostSchema } = require("../schemas/post.schema");
+const { actualizarPostSchema, postSchema } = require("../schemas/post.schema");
+
+const validarPost = (req, res, next) => {
+  const { error } = postSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: "Estructura de post no valida" });
+  }
+  next();
+};
 
 const validarPostId = async (req, res, next) => {
   const { id } = req.params;
-  const post = await Post.findById(id);
+  const post = await Post.findById(id).populate("tags").populate("comments");
   if (!post) {
     return res.status(404).json({ error: "Post no encontrado" });
   }
@@ -30,4 +38,9 @@ const validarActualizarPost = (req, res, next) => {
   next();
 };
 
-module.exports = { validarPostId, cachePostPorId, validarActualizarPost };
+module.exports = {
+  validarPost,
+  validarPostId,
+  cachePostPorId,
+  validarActualizarPost,
+};

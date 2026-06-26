@@ -1,5 +1,6 @@
 const Follower = require("../models/Follower");
 const User = require("../models/User");
+const Post = require("../models/Post");
 
 const obtenerUsuarios = async (req, res) => {
   try {
@@ -35,7 +36,7 @@ const crearUsuario = async (req, res) => {
     const nuevoUsuario = await User.create(req.body);
     res.status(201).json(nuevoUsuario);
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ error: "Error al crear el usuario" });
   }
 };
 
@@ -47,7 +48,7 @@ const actualizarUsuario = async (req, res) => {
     });
     res.status(200).json(usuario);
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ error: "Error al actualizar el usuario" });
   }
 };
 
@@ -56,7 +57,7 @@ const borrarUsuario = async (req, res) => {
     await User.findByIdAndDelete(req.usuario._id);
     res.status(200).json({ message: "Usuario eliminado" });
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ error: "Error al eliminar el usuario" });
   }
 };
 
@@ -112,6 +113,18 @@ const obtenerSeguidos = async (req, res) => {
   }
 };
 
+const obtenerPublicaciones = async (req, res) => {
+  try {
+    const usuario = req.usuario;
+    const publicaciones = await Post.find({
+      userNickname: usuario.nickname,
+    });
+    res.status(200).json(publicaciones);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener las publicaciones" });
+  }
+};
+
 module.exports = {
   obtenerUsuarios,
   crearUsuario,
@@ -122,4 +135,5 @@ module.exports = {
   dejarDeSeguirUsuario,
   obtenerSeguidores,
   obtenerSeguidos,
+  obtenerPublicaciones,
 };

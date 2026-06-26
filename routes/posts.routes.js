@@ -5,10 +5,14 @@ const {
   validarImageId,
 } = require("../middlewares/validarImages.middlewares");
 const {
+  validarPost,
   validarPostId,
   cachePostPorId,
   validarActualizarPost,
 } = require("../middlewares/validarPost.middlewares");
+const {
+  validarUsuarioNickname,
+} = require("../middlewares/validarUser.middlewares");
 
 const {
   createPost,
@@ -20,7 +24,7 @@ const {
   actualizarPost,
 } = require("../controllers/posts.controllers");
 
-router.post("/", createPost);
+router.post("/", validarPost, validarUsuarioNickname, createPost);
 router.get("/", getPosts);
 router.get("/:id", validarPostId, cachePostPorId, obtenerPostPorId);
 router.put("/:id", validarPostId, validarActualizarPost, actualizarPost);

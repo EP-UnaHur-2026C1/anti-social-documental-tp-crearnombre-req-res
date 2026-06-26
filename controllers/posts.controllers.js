@@ -56,7 +56,7 @@ const createPost = async (req, res) => {
 //OBTENER TODOS LOS POSTS
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate("tags");
+    const posts = await Post.find().populate("tags").populate("comments");
 
     const limiteMeses = parseInt(process.env.COMENTARIOS_LIMITE_MESES) || 6;
     const fechaLimite = new Date();

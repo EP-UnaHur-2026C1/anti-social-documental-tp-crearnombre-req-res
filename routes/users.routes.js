@@ -45,4 +45,7 @@ router.get(
 );
 router.get("/:id/following", validarUsuarioId, userController.obtenerSeguidos);
 
+// Endpoints para post
+router.get("/:id/posts", validarUsuarioId, userController.obtenerPublicaciones);
+
 module.exports = router;
