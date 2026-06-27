@@ -20,18 +20,14 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nickname\": \"elias_dev\",\n  \"nombre\": \"Elias\",\n  \"apellido\": \"Dev\",\n  \"fecha_nacimiento\": \"1998-05-15\"\n}"
+              "raw": "{\n  \"nickname\": \"eliasdev\",\n  \"nombre\": \"Elias\",\n  \"apellido\": \"Dev\",\n  \"fecha_nacimiento\": \"1998-05-15\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/users",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users"
-              ]
+              "path": ["users"]
             }
           }
         },
@@ -43,13 +39,9 @@
             "url": {
               "raw": "http://localhost:3000/users",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users"
-              ]
+              "path": ["users"]
             }
           }
         },
@@ -61,14 +53,9 @@
             "url": {
               "raw": "http://localhost:3000/users/ID_DEL_USUARIO",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users",
-                "ID_DEL_USUARIO"
-              ]
+              "path": ["users", "ID_DEL_USUARIO"]
             }
           }
         },
@@ -89,14 +76,9 @@
             "url": {
               "raw": "http://localhost:3000/users/ID_DEL_USUARIO",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users",
-                "ID_DEL_USUARIO"
-              ]
+              "path": ["users", "ID_DEL_USUARIO"]
             }
           }
         },
@@ -108,14 +90,9 @@
             "url": {
               "raw": "http://localhost:3000/users/ID_DEL_USUARIO",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users",
-                "ID_DEL_USUARIO"
-              ]
+              "path": ["users", "ID_DEL_USUARIO"]
             }
           }
         },
@@ -127,15 +104,9 @@
             "url": {
               "raw": "http://localhost:3000/users/ID_DEL_USUARIO/posts",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users",
-                "ID_DEL_USUARIO",
-                "posts"
-              ]
+              "path": ["users", "ID_DEL_USUARIO", "posts"]
             }
           }
         }
@@ -161,15 +132,9 @@
             "url": {
               "raw": "http://localhost:3000/users/ID_DEL_USUARIO_A_SEGUIR/follow",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users",
-                "ID_DEL_USUARIO_A_SEGUIR",
-                "follow"
-              ]
+              "path": ["users", "ID_DEL_USUARIO_A_SEGUIR", "follow"]
             }
           }
         },
@@ -190,15 +155,9 @@
             "url": {
               "raw": "http://localhost:3000/users/ID_DEL_USUARIO_A_DEJAR_DE_SEGUIR/follow",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users",
-                "ID_DEL_USUARIO_A_DEJAR_DE_SEGUIR",
-                "follow"
-              ]
+              "path": ["users", "ID_DEL_USUARIO_A_DEJAR_DE_SEGUIR", "follow"]
             }
           }
         },
@@ -210,15 +169,9 @@
             "url": {
               "raw": "http://localhost:3000/users/ID_DEL_USUARIO/followers",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users",
-                "ID_DEL_USUARIO",
-                "followers"
-              ]
+              "path": ["users", "ID_DEL_USUARIO", "followers"]
             }
           }
         },
@@ -230,15 +183,9 @@
             "url": {
               "raw": "http://localhost:3000/users/ID_DEL_USUARIO/following",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "users",
-                "ID_DEL_USUARIO",
-                "following"
-              ]
+              "path": ["users", "ID_DEL_USUARIO", "following"]
             }
           }
         }
@@ -259,18 +206,14 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"userNickname\": \"elias_dev\",\n  \"description\": \"Este es mi primer post en la red anti-social!\"\n}"
+              "raw": "{\n  \"userNickname\": \"eliasdev\",\n  \"description\": \"Este es mi primer post en la red anti-social!\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/posts",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "posts"
-              ]
+              "path": ["posts"]
             }
           }
         },
@@ -282,13 +225,9 @@
             "url": {
               "raw": "http://localhost:3000/posts",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "posts"
-              ]
+              "path": ["posts"]
             }
           }
         },
@@ -300,14 +239,9 @@
             "url": {
               "raw": "http://localhost:3000/posts/ID_DEL_POST",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "posts",
-                "ID_DEL_POST"
-              ]
+              "path": ["posts", "ID_DEL_POST"]
             }
           }
         },
@@ -328,14 +262,9 @@
             "url": {
               "raw": "http://localhost:3000/posts/ID_DEL_POST",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "posts",
-                "ID_DEL_POST"
-              ]
+              "path": ["posts", "ID_DEL_POST"]
             }
           }
         },
@@ -347,14 +276,9 @@
             "url": {
               "raw": "http://localhost:3000/posts/ID_DEL_POST",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "posts",
-                "ID_DEL_POST"
-              ]
+              "path": ["posts", "ID_DEL_POST"]
             }
           }
         },
@@ -375,15 +299,9 @@
             "url": {
               "raw": "http://localhost:3000/posts/ID_DEL_POST/imagenes",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "posts",
-                "ID_DEL_POST",
-                "imagenes"
-              ]
+              "path": ["posts", "ID_DEL_POST", "imagenes"]
             }
           }
         },
@@ -395,16 +313,9 @@
             "url": {
               "raw": "http://localhost:3000/posts/ID_DEL_POST/imagenes/ID_DE_LA_IMAGEN",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "posts",
-                "ID_DEL_POST",
-                "imagenes",
-                "ID_DE_LA_IMAGEN"
-              ]
+              "path": ["posts", "ID_DEL_POST", "imagenes", "ID_DE_LA_IMAGEN"]
             }
           }
         },
@@ -425,15 +336,9 @@
             "url": {
               "raw": "http://localhost:3000/posts/ID_DEL_POST/tags",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "posts",
-                "ID_DEL_POST",
-                "tags"
-              ]
+              "path": ["posts", "ID_DEL_POST", "tags"]
             }
           }
         },
@@ -445,16 +350,9 @@
             "url": {
               "raw": "http://localhost:3000/posts/ID_DEL_POST/tags/ID_DEL_TAG",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "posts",
-                "ID_DEL_POST",
-                "tags",
-                "ID_DEL_TAG"
-              ]
+              "path": ["posts", "ID_DEL_POST", "tags", "ID_DEL_TAG"]
             }
           }
         }
@@ -480,13 +378,9 @@
             "url": {
               "raw": "http://localhost:3000/tags",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "tags"
-              ]
+              "path": ["tags"]
             }
           }
         },
@@ -498,13 +392,9 @@
             "url": {
               "raw": "http://localhost:3000/tags",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "tags"
-              ]
+              "path": ["tags"]
             }
           }
         },
@@ -516,14 +406,9 @@
             "url": {
               "raw": "http://localhost:3000/tags/ID_DEL_TAG",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "tags",
-                "ID_DEL_TAG"
-              ]
+              "path": ["tags", "ID_DEL_TAG"]
             }
           }
         },
@@ -544,14 +429,9 @@
             "url": {
               "raw": "http://localhost:3000/tags/ID_DEL_TAG",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "tags",
-                "ID_DEL_TAG"
-              ]
+              "path": ["tags", "ID_DEL_TAG"]
             }
           }
         },
@@ -563,14 +443,9 @@
             "url": {
               "raw": "http://localhost:3000/tags/ID_DEL_TAG",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "tags",
-                "ID_DEL_TAG"
-              ]
+              "path": ["tags", "ID_DEL_TAG"]
             }
           }
         }
@@ -591,18 +466,14 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"userNickname\": \"elias_dev\",\n  \"postId\": \"ID_DEL_POST\",\n  \"descripcion\": \"Excelente publicación!\"\n}"
+              "raw": "{\n  \"userNickname\": \"eliasdev\",\n  \"postId\": \"ID_DEL_POST\",\n  \"descripcion\": \"Excelente publicación!\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/comments",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "comments"
-              ]
+              "path": ["comments"]
             }
           }
         },
@@ -614,14 +485,9 @@
             "url": {
               "raw": "http://localhost:3000/comments/ID_DEL_COMENTARIO",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "comments",
-                "ID_DEL_COMENTARIO"
-              ]
+              "path": ["comments", "ID_DEL_COMENTARIO"]
             }
           }
         },
@@ -633,15 +499,9 @@
             "url": {
               "raw": "http://localhost:3000/comments/post/ID_DEL_POST",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "comments",
-                "post",
-                "ID_DEL_POST"
-              ]
+              "path": ["comments", "post", "ID_DEL_POST"]
             }
           }
         },
@@ -662,14 +522,9 @@
             "url": {
               "raw": "http://localhost:3000/comments/ID_DEL_COMENTARIO",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "comments",
-                "ID_DEL_COMENTARIO"
-              ]
+              "path": ["comments", "ID_DEL_COMENTARIO"]
             }
           }
         },
@@ -681,14 +536,9 @@
             "url": {
               "raw": "http://localhost:3000/comments/ID_DEL_COMENTARIO",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "comments",
-                "ID_DEL_COMENTARIO"
-              ]
+              "path": ["comments", "ID_DEL_COMENTARIO"]
             }
           }
         }

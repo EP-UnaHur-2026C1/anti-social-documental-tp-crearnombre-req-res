@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Follower = require("../models/Follower");
 const {
   usuarioSchema,
   actualizarUsuarioSchema,
@@ -77,6 +78,17 @@ const validarNoSeguirseASiMismo = (req, res, next) => {
   next();
 };
 
+const validarNoDuplicadoFollow = async (req, res, next) => {
+  const existe = await Follower.findOne({
+    follower: req.seguidor._id,
+    following: req.usuario._id,
+  });
+  if (existe) {
+    return res.status(409).json({ error: "Ya seguís a este usuario" });
+  }
+  next();
+};
+
 module.exports = {
   validarUsuario,
   validarNickname,
@@ -85,4 +97,5 @@ module.exports = {
   validarActualizarUsuario,
   validarSeguidorId,
   validarNoSeguirseASiMismo,
+  validarNoDuplicadoFollow,
 };
