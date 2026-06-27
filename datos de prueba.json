@@ -1,0 +1,158 @@
+{
+  "users": [
+    {
+      "nickname": "lunadev",
+      "nombre": "Valentina",
+      "apellido": "Morales",
+      "fecha_nacimiento": "1998-04-15"
+    },
+    {
+      "nickname": "marcobeats",
+      "nombre": "Marcos",
+      "apellido": "Figueroa",
+      "fecha_nacimiento": "2001-11-03"
+    },
+    {
+      "nickname": "sofiart",
+      "nombre": "Sofía",
+      "apellido": "Herrera",
+      "fecha_nacimiento": "1995-07-22"
+    },
+    {
+      "nickname": "nicocode",
+      "nombre": "Nicolás",
+      "apellido": "Castro",
+      "fecha_nacimiento": "2000-02-28"
+    },
+    {
+      "nickname": "juliramos",
+      "nombre": "Juliana",
+      "apellido": "Ramos",
+      "fecha_nacimiento": "1997-09-10"
+    },
+    {
+      "nickname": "elpepe99",
+      "nombre": "José",
+      "apellido": "González",
+      "fecha_nacimiento": "1990-12-01"
+    },
+    {
+      "nickname": "agusfoto",
+      "nombre": "Agustina",
+      "apellido": "López",
+      "fecha_nacimiento": "2003-05-18"
+    }
+  ],
+
+  "posts": [
+    {
+      "description": "Primer post desde la API, todo funciona perfecto!",
+      "userNickname": "lunadev"
+    },
+    {
+      "description": "Hoy empecé a aprender Sequelize y ya me vuela la cabeza.",
+      "userNickname": "nicocode"
+    },
+    {
+      "description": "Compartiendo mis últimas fotos del viaje a Bariloche!",
+      "userNickname": "agusfoto"
+    },
+    {
+      "description": "¿Alguien más usa vim en 2026 o soy el único?",
+      "userNickname": "elpepe99"
+    },
+    {
+      "description": "Nueva ilustración terminada, tres días de trabajo.",
+      "userNickname": "sofiart"
+    },
+    {
+      "description": "Recordatorio de que el café es un grupo alimenticio.",
+      "userNickname": "juliramos"
+    },
+    {
+      "description": "Descubrí un bug en producción a las 2am, buenas noches a todos.",
+      "userNickname": "marcobeats"
+    }
+  ],
+
+  "comments": [
+    {
+      "descripcion": "Totalmente de acuerdo con esto!",
+      "userNickname": "marcobeats",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "descripcion": "Me pasó lo mismo cuando arranqué, no te rindas.",
+      "userNickname": "sofiart",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "descripcion": "Yo uso neovim, bienvenido al club.",
+      "userNickname": "lunadev",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "descripcion": "Qué hermosa la ilustración, tenés mucho talento!",
+      "userNickname": "nicocode",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "descripcion": "El café y el mate son la base de toda arquitectura de software.",
+      "userNickname": "juliramos",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "descripcion": "Muy buena publicación, me gustó mucho!",
+      "userNickname": "elpepe99",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "descripcion": "Bariloche es hermoso, cuándo fue el viaje?",
+      "userNickname": "lunadev",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "descripcion": "Clásico encontrar bugs a esa hora, un abrazo fuerza.",
+      "userNickname": "sofiart",
+      "postId": "COMPLETAR ID DEL POST"
+    }
+  ],
+
+  "tags": [
+    { "nombre": "tecnologia" },
+    { "nombre": "musica" },
+    { "nombre": "videojuegos" },
+    { "nombre": "programacion" },
+    { "nombre": "fotografia" },
+    { "nombre": "arte" },
+    { "nombre": "humor" },
+    { "nombre": "viajes" }
+  ],
+
+  "post_images": [
+    {
+      "url": "https://picsum.photos/600/400",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "url": "https://picsum.photos/800/600",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "url": "https://picsum.photos/400/400",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "url": "https://picsum.photos/1024/768",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "url": "https://picsum.photos/500/300",
+      "postId": "COMPLETAR ID DEL POST"
+    },
+    {
+      "url": "https://picsum.photos/700/500",
+      "postId": "COMPLETAR ID DEL POST"
+    }
+  ]
+}

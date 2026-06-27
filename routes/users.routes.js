@@ -9,6 +9,7 @@ const {
   borrarUsuario,
   validarSeguidorId,
   validarNoSeguirseASiMismo,
+  validarNoDuplicadoFollow,
 } = require("../middlewares/validarUser.middlewares");
 
 // Endpoints para usuario
@@ -30,6 +31,7 @@ router.post(
   validarUsuarioId,
   validarSeguidorId,
   validarNoSeguirseASiMismo,
+  validarNoDuplicadoFollow,
   userController.seguirUsuario,
 );
 router.delete(

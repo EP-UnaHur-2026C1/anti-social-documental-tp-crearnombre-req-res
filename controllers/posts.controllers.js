@@ -11,10 +11,8 @@ const agregarImagen = async (req, res) => {
     post.imagenes.push({ url: `/images/${filename}` });
     await post.save();
 
-    // Invalidar caché
     await redisClient.del(`post:${post._id}`);
-
-
+    await redisClient.del("posts");
     res.status(200).json(post);
   } catch (error) {
     res
@@ -40,9 +38,8 @@ const eliminarImagen = async (req, res) => {
     );
     await post.save();
 
-    // Invalidar caché
+    await redisClient.del("posts");
     await redisClient.del(`post:${post._id}`);
-
     res.status(200).json({
       message: "Imagen eliminada con éxito",
       post: post,
@@ -71,12 +68,9 @@ const agregarTag = async (req, res) => {
 
     post.tags.push(tag._id);
     await post.save();
-
-    // Invalidar caché
+    await redisClient.del("posts");
     await redisClient.del(`post:${post._id}`);
-
     await post.populate("tags");
-
     res.status(200).json(post);
   } catch (error) {
     res.status(500).json({ error: "Error al agregar el tag" });
@@ -106,9 +100,8 @@ const eliminarTag = async (req, res) => {
     });
     await post.save();
 
-    // Invalidar caché
+    await redisClient.del("posts");
     await redisClient.del(`post:${post._id}`);
-
     res.status(200).json({
       message: "Tag eliminado con éxito",
       post: post,
@@ -130,6 +123,7 @@ const createPost = async (req, res) => {
       tags: tags || [],
     });
 
+    await redisClient.del("posts");
     res.status(201).json(newPost);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -192,6 +186,8 @@ const actualizarPost = async (req, res) => {
     const post = await Post.findByIdAndUpdate(postAnt._id, req.body, {
       new: true,
     });
+    
+    await redisClient.del("posts");
     await redisClient.del(cacheKey);
     res.status(200).json(post);
   } catch (error) {
@@ -209,6 +205,7 @@ const deletePost = async (req, res) => {
     if (!deletedPost) {
       return res.status(404).json({ message: "Post no encontrado" });
     }
+    await redisClient.del("posts");
     await redisClient.del(cacheKey);
     res.json({ message: "Post eliminado correctamente" });
   } catch (error) {

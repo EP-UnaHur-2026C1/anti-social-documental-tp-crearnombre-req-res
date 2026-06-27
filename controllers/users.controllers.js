@@ -94,7 +94,10 @@ const obtenerSeguidores = async (req, res) => {
       "follower",
       "nickname",
     );
-    res.status(200).json(seguidores);
+    res.status(200).json(seguidores.map((s) => ({
+      id: s.follower._id,
+      nickname: s.follower.nickname,
+    })));
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los seguidores" });
   }
@@ -107,7 +110,10 @@ const obtenerSeguidos = async (req, res) => {
       "following",
       "nickname",
     );
-    res.status(200).json(seguidos);
+    res.status(200).json(seguidos.map((s) => ({
+      id: s.following._id,
+      nickname: s.following.nickname,
+    })));
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los seguidos" });
   }
