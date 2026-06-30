@@ -171,3 +171,4 @@ El archivo `swagger.yaml` contiene la especificación OpenAPI 3.0 completa de to
 ## Estrategia de Caché
 
 La aplicación implementa Redis para reducir las consultas constantes a MongoDB, optimizando la lectura de publicaciones (`/posts/:id`). La caché se invalida o actualiza automáticamente cuando un post sufre modificaciones (edición, se añaden tags o imágenes).
+# TP-estrategia
