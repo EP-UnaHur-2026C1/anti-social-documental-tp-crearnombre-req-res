@@ -6,13 +6,13 @@ const { descargarImagen } = require("../utils/imagen.utils");
 
 const agregarImagen = async (req, res) => {
   try {
-    const post = req.post; // Se obtiene el post del objeto req, que se supone que ha sido previamente cargado por un middleware. Esto permite acceder al post específico al que se desea agregar la imagen.
-    const filename = await descargarImagen(req.body.url); // Se llama a la función descargarImagen con la URL proporcionada en el cuerpo de la solicitud. Esta función descarga la imagen y devuelve el nombre del archivo descargado. Se utiliza await para esperar a que la promesa se resuelva antes de continuar con la ejecución del código.
-    post.imagenes.push({ url: `/images/${filename}` }); // Se agrega un objeto con la URL de la imagen descargada al arreglo de imágenes del post. La URL se construye utilizando el nombre del archivo descargado y se asume que las imágenes se sirven desde un directorio público llamado "images". Esto permite asociar la imagen descargada con el post correspondiente.
-    await post.save(); // Se guarda el post actualizado en la base de datos. Esto asegura que los cambios realizados en el arreglo de imágenes se persistan y estén disponibles para futuras consultas.
+    const post = req.post;
+    const filename = await descargarImagen(req.body.url);
+    post.imagenes.push({ url: `/images/${filename}` });
+    await post.save();
 
-    await redisClient.del(`post:${post._id}`); // Se elimina la entrada en caché del post específico utilizando su ID. Esto asegura que la próxima vez que se solicite este post, se obtenga la versión actualizada desde la base de datos en lugar de la versión en caché obsoleta.
-    await redisClient.del("posts"); // Se elimina la entrada en caché de todos los posts. Esto asegura que la próxima vez que se soliciten todos los posts, se obtenga la versión actualizada desde la base de datos en lugar de la versión en caché obsoleta.
+    await redisClient.del(`post:${post._id}`);
+    await redisClient.del("posts");
     res.status(200).json(post);
   } catch (error) {
     res
@@ -26,17 +26,17 @@ const eliminarImagen = async (req, res) => {
     const post = req.post;
     const { imageId } = req.params;
 
-    const imagenExiste = post.imagenes.some( // Se verifica si la imagen con el ID proporcionado existe en el arreglo de imágenes del post. Esto se hace utilizando el método some, que devuelve true si al menos un elemento del arreglo cumple con la condición especificada.
-      (img) => img._id.toString() === imageId, // Se compara el ID de cada imagen en el arreglo con el ID proporcionado en los parámetros de la solicitud. Se utiliza toString() para asegurarse de que ambos IDs sean cadenas de texto antes de compararlos. Esto permite determinar si la imagen que se desea eliminar está asociada al post.
+    const imagenExiste = post.imagenes.some(
+      (img) => img._id.toString() === imageId,
     );
-    if (!imagenExiste) { // Si la imagen no existe en el arreglo de imágenes del post, se devuelve una respuesta con un código de estado 404 (No encontrado) y un mensaje de error indicando que la imagen no se encontró en el post. Esto permite informar al cliente que la operación de eliminación no se pudo realizar porque la imagen especificada no está asociada al post.
+    if (!imagenExiste) {
       return res.status(404).json({ error: "Imagen no encontrada en el post" });
     }
 
-    post.imagenes = post.imagenes.filter( // Se filtra el arreglo de imágenes del post para eliminar la imagen con el ID proporcionado. Esto se hace utilizando el método filter, que crea un nuevo arreglo que incluye solo los elementos que cumplen con la condición especificada.
+    post.imagenes = post.imagenes.filter(
       (img) => img._id.toString() !== imageId,
     );
-    await post.save(); // Se guarda el post actualizado en la base de datos después de eliminar la imagen. Esto asegura que los cambios realizados en el arreglo de imágenes se persistan y estén disponibles para futuras consultas.
+    await post.save();
 
     await redisClient.del("posts");
     await redisClient.del(`post:${post._id}`);
